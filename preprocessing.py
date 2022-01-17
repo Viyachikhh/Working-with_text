@@ -19,10 +19,10 @@ re_name = r'[A-ZА-Я]\.'
 delete = r"([MD]r?s?\.|\[.\]|'\'+|\.+)"
 
 
-def make_dataset(cvs_dataset):
+def make_dataset(series):
     json_dict = dict()
     count = 0
-    for i in range(cvs_dataset.shape[0]):
+    for i in range(series.shape[0]):
         """
             Steps:
             1) ?,! -> .
@@ -31,7 +31,7 @@ def make_dataset(cvs_dataset):
 
 
         """
-        string = re.sub(r'(\?+|\!+)', '.', cvs_dataset.iloc[i, 1])
+        string = re.sub(r'(\?+|\!+)', '.', series[i])
         logging.warning(f'first step: {string}')
         string = re.sub(r'(\.{2,}|[-]+|[;:]+)', ' ', string)  # + ' '  delete ... ; - ;
         logging.warning(f'second step: {string}')
@@ -45,7 +45,7 @@ def make_dataset(cvs_dataset):
                 sentence = re.sub(r'\.', '', sentence)
             # print('after: ', sentence)
             if len(sentence) != 0:
-                if len(sentence) < 4:
+                if len(sentence) <= 3:
                     json_dict[count - 1]['name'].append(sentence + '.')
                 else:
                     json_dict[count] = {'sentence': sentence,
@@ -63,5 +63,7 @@ def make_dataset(cvs_dataset):
 
 
 df = pd.read_csv('dataset_text/rt_reviews.csv', encoding='1251')
+print(df.columns)
+series = df['Review']
 
-make_dataset(df)
+make_dataset(series)
