@@ -16,8 +16,6 @@ re_uppercase = r'[A-ZА-Я]{1}\w+'
 re_abbrev = r'[A-ZА-Я]{2,}'
 re_name = r'[A-ZА-Я]\.'
 
-delete = r"([MD]r?s?\.|\[.\]|'\'+|\.+)"
-
 
 def make_dataset(series):
     json_dict = dict()
